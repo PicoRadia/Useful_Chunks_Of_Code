@@ -39,9 +39,217 @@ import warnings
 warnings.filterwarnings("ignore")
 
 =========================================================================
+	Show all values of dataframe
+=========================================================================
+
+pd.set_option('display.max_columns', None)
+=========================================================================
 	Dataframes
 =========================================================================
 unique value of a column : 
+
+	df.name_column.nuique()
+
+fill a nan value:
+	df.column.fillna(<mean()>)
+
+Count nan value in a column :
+	df.column.isna().sum()
+
+
+drop column in dataframe : 
+	df.drop(labels=[<column_names>], axis=1)
+
+Sort series: 
+	pd.Series(df[<name_column>].unique()).sort_values()
+
+Convert type of columns in data frame : 
+	df[<name_column>].astype(<type>)
+
+Count unique values in groupby:
+	df.groupby([<name_column>]).nuinque()
+
+Rename column name : 
+	df.rename(columns = {'old_col1':'new_col1', 'old_col2':'new_col2'}, inplace = True)
+
+Replace character in column : 
+
+ 	df.columns = df.columns.str.replace('old_characeter' , 'new_character') 
+
+Replace value in Column: 
+	df["column1"].replace({"a": "x", "b": "y"}, inplace=True)
+ 
+Get the data type of dataframe columns : 
+	df.dtypes
+
+Rows of dataframe in  a numpy array:
+df = pd.DataFrame({'A': [1, 2], 'B': [0.5, 0.75]},
+                  index=['a', 'b'])
+df
+   A     B
+a  1  0.50
+b  2  0.75
+
+df.to_records()
+	>> rec.array([('a', 1, 0.5 ), ('b', 2, 0.75)],
+
+delete column from dataframe: 
+	del df['col_name']
+or
+	df = df.drop('col1' , axis = 1)
+
+
+
+==========================================================================
+	# Python and sql
+==========================================================================
+pass variables to sql query:
+	cursor.execute("INSERT INTO table VALUES (%s, %s, %s)", (var1, var2, var3))
+
+=========================================================================
+	# clean column names
+=========================================================================
+df.columns = df.columns.str.lower()
+df.columns = df.columns.str.strip()
+df.columns = df.columns.str.replace(' ' , '_')
+df.columns = df.columns.str.replace("é" , 'e')
+df.columns = df.columns.str.replace("'" , '_')
+
+
+
+=========================================================================
+	Write a list to a file
+=========================================================================
+
+l1=['hi','hello','welcome']
+
+f=open('f1.txt','w')
+s1='\n'.join(l1)
+f.write(s1)
+f.close()
+
+
+=========================================================================
+Replace occurence in datframe column by another value:
+
+def generalize(ser, match_name, default=None, regex=False, case=False):
+    """ Search a series for text matches.
+    Based on code from https://www.metasnake.com/blog/pydata-assign.html
+
+    ser: pandas series to search
+    match_name: tuple containing text to search for and text to use for normalization
+    default: If no match, use this to provide a default value, otherwise use the original text
+    regex: Boolean to indicate if match_name contains a  regular expression
+    case: Case sensitive search
+
+    Returns a pandas series with the matched value
+
+    """
+    seen = None
+    for match, name in match_name:
+        mask = ser.str.contains(match, case=case, regex=regex , na=False)
+        if seen is None:
+            seen = mask
+        else:
+            seen |= mask
+        ser = ser.where(~mask, name)
+    if default:
+        ser = ser.where(seen, default)
+    else:
+        ser = ser.where(seen, ser.values)
+    return ser
+
+=========================================================================
+=========================================================================
+=========================================================================
+=========================================================================
+=========================================================================
+=========================================================================
+=========================================================================
+=========================================================================
+
+=========================================================================
+	     MYSQL
+=========================================================================
+connect to database command  as su:
+
+    sudo mysql -u root -p; 
+
+
+Insert Values to Database : 
+	INSERT INTO MyTable ( Column1, Column2 ) VALUES
+		( Value1, Value2 ), ( Value1, Value2 );
+
+Show columns of a table :
+	SELECT `COLUMN_NAME` 
+	FROM `INFORMATION_SCHEMA`.`COLUMNS` 
+	WHERE `TABLE_SCHEMA`='yourdatabasename' 
+    	AND `TABLE_NAME`='yourtablename';
+
+Insert dataframe to SQL database:
+	df_list = list(df.to_records(index = False)) # get rows in a numpy array of tuples 
+   	insert_final  = list(map(tuple,df_list)) 
+
+	
+
+
+
+=========================================================================
+	     Linux
+=========================================================================
+Launch Xampp server
+	sudo /opt/lampp/lampp start 
+
+
+
+
+=========================================================================
+	     Git 
+=========================================================================
+
+Set username : 
+	
+	git config --global user.name "PicoRadia"
+
+Set Email: 
+
+	git config --global user.email "r.elhamdouni@enim.ac.ma"
+
+Show  the configs : 
+
+	git config -l
+
+ssh github:
+
+	ssh -T git@github.com
+
+ssh clone github : 
+
+	git clone git@github.com:PicoRadia/<name_of_repo>.git
+
+ssh push github:
+
+	git push
+
+create new branch :
+	git checkout -b <branch-name>
+
+show all branch names:
+	git branch -a
+
+switch branch to existing branch : 
+	git checkout <existing_branch>
+
+Merge branches in git : 
+	1. Chekout to the recieving branch
+	2. git merge <name of the branch that will be merged to the recieving branch  >
+
+
+=========================================================================
+	     VSCODE
+=========================================================================
+Comment selction :
+	ctrl  + /
 
 	df.name_column.nuique()
 
